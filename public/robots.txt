@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /404
+
+Sitemap: https://rukhsar-ahmad-portfolio-e34dd.web.app/sitemap.xml
