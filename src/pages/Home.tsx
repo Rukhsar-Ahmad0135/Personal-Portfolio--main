@@ -102,6 +102,39 @@ const stack = [
   { name: 'Framer', slug: 'framer', color: '0055FF' },
 ];
 
+const testimonials = [
+  {
+    quote: 'Rukhsar translated a complex product into a clear, polished experience that our customers understood immediately.',
+    name: 'Ayesha Khan',
+    role: 'Founder, Northstar Labs',
+  },
+  {
+    quote: 'Thoughtful, fast and incredibly reliable. Every detail felt intentional, from the first wireframe to launch day.',
+    name: 'Hamza Malik',
+    role: 'Product Lead, Orbit Commerce',
+  },
+  {
+    quote: 'The rare developer who cares equally about the experience, the architecture and the result for the business.',
+    name: 'Sara Ahmed',
+    role: 'Director, Studio Sora',
+  },
+  {
+    quote: 'Our new site feels like us now — confident, modern and effortless to use on every screen.',
+    name: 'Omar Farooq',
+    role: 'Co-founder, Fieldnote',
+  },
+  {
+    quote: 'Clear communication, sharp execution and a genuine eye for the details that make a product memorable.',
+    name: 'Mariam Iqbal',
+    role: 'Marketing Director, Lumen',
+  },
+  {
+    quote: 'From idea to a working product, Rukhsar made the process feel calm, collaborative and surprisingly simple.',
+    name: 'Bilal Shah',
+    role: 'Founder, Common Ground',
+  },
+];
+
 /* ---------- service accordion ---------- */
 
 function ServiceRow({ s, open, onToggle }: { s: typeof services[number]; open: boolean; onToggle: () => void }) {
@@ -136,6 +169,65 @@ function ServiceRow({ s, open, onToggle }: { s: typeof services[number]; open: b
         </div>
       </motion.div>
     </div>
+  );
+}
+
+function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[number] }) {
+  return (
+    <article className="w-[min(78vw,21rem)] sm:w-[21rem] shrink-0 min-h-[15.5rem] rounded-[1.25rem] border border-black/10 bg-white/75 p-6 sm:p-7 flex flex-col justify-between shadow-[0_12px_35px_rgba(0,0,0,0.04)]">
+      <div>
+        <span className="block text-4xl leading-none text-indigo-600/80" aria-hidden="true">“</span>
+        <p className="mt-2 text-base leading-relaxed font-light text-black/75">{testimonial.quote}</p>
+      </div>
+      <div className="mt-7 flex items-center gap-3">
+        <span className="size-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-light">
+          {testimonial.name.split(' ').map((part) => part[0]).join('')}
+        </span>
+        <div>
+          <p className="text-sm font-medium">{testimonial.name}</p>
+          <p className="text-xs font-light text-black/45">{testimonial.role}</p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function Testimonials({ reducedMotion }: { reducedMotion: boolean }) {
+  const rows = [testimonials.slice(0, 3), testimonials.slice(3)];
+
+  return (
+    <section
+      aria-labelledby="testimonials-heading"
+      className="relative overflow-hidden rounded-[2rem] border border-black/10 bg-white px-4 py-12 sm:px-8 sm:py-16 md:px-10 md:py-20"
+    >
+      <div className="relative z-10 mx-auto max-w-2xl text-center">
+        <p className="text-xs font-light uppercase tracking-[0.3em] text-indigo-600">Client notes</p>
+        <h2 id="testimonials-heading" className="mt-5 text-4xl font-light leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
+          Good work is remembered.
+        </h2>
+        <p className="mx-auto mt-5 max-w-lg text-sm font-light leading-relaxed text-black/55 sm:text-base">
+          A few words from the people and teams I&apos;ve had the pleasure of building with.
+        </p>
+      </div>
+
+      <div className="relative mt-12 space-y-4 [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)] sm:mt-16">
+        {rows.map((row, rowIndex) => {
+          const loopedRow = [...row, ...row];
+          return (
+            <motion.div
+              key={rowIndex}
+              className="flex w-max gap-4"
+              animate={reducedMotion ? undefined : { x: rowIndex === 0 ? ['0%', '-50%'] : ['-50%', '0%'] }}
+              transition={reducedMotion ? undefined : { duration: rowIndex === 0 ? 28 : 32, ease: 'linear', repeat: Infinity }}
+            >
+              {loopedRow.map((testimonial, index) => (
+                <TestimonialCard key={`${testimonial.name}-${index}`} testimonial={testimonial} />
+              ))}
+            </motion.div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -622,6 +714,9 @@ export default function Home() {
 
         {/* GET IN TOUCH */}
         <section className="relative px-5 sm:px-6 lg:px-10 py-20 sm:py-24 md:py-32 border-t border-black/10 overflow-hidden">
+          <div className="mb-20 sm:mb-24 md:mb-32">
+            <Testimonials reducedMotion={Boolean(prefersReducedMotion)} />
+          </div>
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <Reveal>
               <h2 className="text-6xl md:text-8xl font-light tracking-tight leading-[0.95]">
